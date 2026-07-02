@@ -1,0 +1,23 @@
+ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border: 1px solid #8f8f9d;
+  transition: 0.2s;
+  text-align: start;
+  min-height: 2.5em;
+  max-height: fit-content;
+}
+
+li:hover {
+  border-color: whitesmoke;
+}

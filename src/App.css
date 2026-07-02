@@ -1,0 +1,61 @@
+.container {
+  text-align: center;
+  margin: 20vh auto;
+  max-width: 900px;
+  border: 1px solid white;
+  padding: 1em 2em;
+}
+
+h1 {
+  max-width: fit-content;
+  margin: 0.5em auto;
+}
+
+.listAndForm {
+  display: flex;
+  justify-content: space-between;
+  gap: 2em;
+}
+
+.listAndForm > * {
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  padding: 1em 0;
+}
+
+.buttons > * {
+  margin: 0 5em;
+}
+
+.buttons > div {
+  display: flex;
+  gap: 2em;
+}
+
+button {
+  font-size: 1em;
+  padding: 0.3em 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+@media (max-width: 1000px) {
+  .container {
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    max-width: 90%;
+  }
+  
+  .buttons > * {
+    margin: 0;
+  }
+}
