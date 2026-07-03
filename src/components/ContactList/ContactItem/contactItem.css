@@ -1,5 +1,6 @@
 p {
   margin: auto 1em;
+  user-select: none;
 }
 
 span {

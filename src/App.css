@@ -2,8 +2,10 @@
   text-align: center;
   margin: 20vh auto;
   max-width: 900px;
-  border: 1px solid white;
+  border: 1px solid #8f8f9d;
   padding: 1em 2em;
+  min-height: 21.5em;
+  position: relative;
 }
 
 h1 {
@@ -18,25 +20,12 @@ h1 {
 }
 
 .listAndForm > * {
-  width: 100%;
+  width: 50%;
 }
 
-.buttons {
-  display: flex;
-  justify-content: space-around;
-  padding: 1em 0;
-}
-
-.buttons > * {
-  margin: 0 5em;
-}
-
-.buttons > div {
-  display: flex;
-  gap: 2em;
-}
-
-button {
+button,
+input[type='submit'],
+input[type='button'] {
   font-size: 1em;
   padding: 0.3em 1em;
   border-radius: 0.5em;
@@ -53,9 +42,5 @@ button {
 @media (max-width: 700px) {
   .container {
     max-width: 90%;
-  }
-  
-  .buttons > * {
-    margin: 0;
   }
 }

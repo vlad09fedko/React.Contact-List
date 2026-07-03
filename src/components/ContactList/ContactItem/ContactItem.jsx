@@ -1,12 +1,18 @@
 import { Component } from 'react';
-import './contactItem.module.css';
+import './contactItem.css';
 
 export class ContactItem extends Component {
   render() {
+    const contact = this.props.contact;
     return (
       <>
-        <p>{`${this.props.firstName} ${this.props.lastName}`}</p>
-        <span>X</span>
+        <p>{`${contact.firstName} ${contact.lastName}`}</p>
+        <span
+          onClick={() => {
+            this.props.onDeleteContact(contact.id);
+          }}>
+          X
+        </span>
       </>
     );
   }
