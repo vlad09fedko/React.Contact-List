@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-import style from './contactForm.module.css';
+import contactForm from './contactForm.module.css';
 
 export class ContactForm extends Component {
   state = {
@@ -13,8 +13,8 @@ export class ContactForm extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.currentContact !== prevProps.currentContact) {
       this.setState({
-        'First name': this.props.currentContact?.firstName || '',
-        'Last name': this.props.currentContact?.lastName || '',
+        'First name': this.props.currentContact?.fName || '',
+        'Last name': this.props.currentContact?.lName || '',
         Email: this.props.currentContact?.email || '',
         Phone: this.props.currentContact?.phone || '',
       });
@@ -22,24 +22,8 @@ export class ContactForm extends Component {
   }
 
   inputHandler = event => {
-    if (event.target.name !== 'Phone') {
-      this.setState({
-        [event.target.name]: event.target.value,
-      });
-    } else {
-      this.setState(() => {
-        if (/^\d{0,12}$/.test(event.target.value)) {
-          return {
-            Phone: event.target.value,
-          };
-        }
-      });
-    }
-  };
-
-  clearInput = inp => {
     this.setState({
-      [inp]: '',
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -51,7 +35,7 @@ export class ContactForm extends Component {
       this.state.Email,
       this.state.Phone,
     );
-    if (this.props.mode === 'add') {
+    if (this.props.currentContact === null) {
       this.setState({
         'First name': '',
         'Last name': '',
@@ -61,11 +45,13 @@ export class ContactForm extends Component {
     }
   };
 
+  
   render() {
+    const { currentContact } = this.props;
     return (
       <form onSubmit={this.saveHandler}>
         {Object.keys(this.state).map(inp => (
-          <div key={inp} className={style.inputArea}>
+          <div key={inp} className={contactForm.inputArea}>
             <input
               type={inp === 'Email' ? 'email' : 'text'}
               placeholder={inp}
@@ -76,19 +62,25 @@ export class ContactForm extends Component {
               name={inp}
               onChange={this.inputHandler}
             />
-            <span onClick={() => this.clearInput(inp)}>X</span>
+            <span
+              onClick={() => {
+                this.setState({ [inp]: '' });
+              }}>
+              X
+            </span>
           </div>
         ))}
-        <div className={style.buttons}>
+
+        <div className={contactForm.buttons}>
           <input type='submit' value='Save'></input>
           <input
             type='button'
             onClick={() => {
-              this.props.onDeleteContact(this.props.currentContact?.id || null);
+              this.props.onDeleteContact(currentContact?.id);
             }}
             value='Delete'
             style={{
-              visibility: this.props.mode === 'add' ? 'hidden' : 'visible',
+              visibility: currentContact === null ? 'hidden' : 'visible',
             }}></input>
         </div>
       </form>

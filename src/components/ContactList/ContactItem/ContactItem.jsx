@@ -3,13 +3,13 @@ import './contactItem.css';
 
 export class ContactItem extends Component {
   render() {
-    const contact = this.props.contact;
+    const { fName, lName, id } = this.props.contact;
     return (
       <>
-        <p>{`${contact.firstName} ${contact.lastName}`}</p>
+        <p>{`${fName} ${lName}`}</p>
         <span
           onClick={() => {
-            this.props.onDeleteContact(contact.id);
+            this.props.onDeleteContact(id);
           }}>
           X
         </span>

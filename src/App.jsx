@@ -1,16 +1,15 @@
 import { Component } from 'react';
-import Contact from './index';
+import { v4 as uuid } from 'uuid';
 
 import ContactList from './components/ContactList/ContactList';
 import ContactForm from './components/ContactForm/ContactForm';
 
-import './App.css';
+import app from './App.module.css';
 
 export class App extends Component {
   state = {
     contacts: [],
     currentContact: null,
-    mode: 'add',
   };
 
   componentDidMount() {
@@ -24,23 +23,29 @@ export class App extends Component {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }
 
+  createContact = (id, fName = '', lName = '', email = '', phone = '') => ({
+    id: id ? id : uuid(),
+    fName,
+    lName,
+    email,
+    phone,
+  });
+
   сontactHandler = id => {
     this.setState({
       currentContact: this.state.contacts.filter(
         contact => id === contact.id,
       )[0],
-      mode: 'edit',
     });
   };
 
-  onDeleteContact = id => {
+  onDeleteContact = (id = null) => {
     this.setState(state => {
       const contacts = state.contacts.filter(contact => contact.id !== id);
       this.pushToLocalStorage(contacts);
       return {
         contacts,
         currentContact: null,
-        mode: 'add',
       };
     });
   };
@@ -48,63 +53,59 @@ export class App extends Component {
   onCreateContact = () => {
     this.setState({
       currentContact: null,
-      mode: 'add',
     });
   };
 
   onSaveContact = (...data) => {
     this.setState(state => {
       let contacts = [...state.contacts];
-      if (state.mode === 'add') {
-        contacts.push(new Contact(...data));
+      let editedContact = null;
+
+      if (state.currentContact === null) {
+        contacts.push(this.createContact(null, ...data));
+      } else {
+        const editedContacts = this.onEditContact(contacts, data);
+        ({ contacts, editedContact } = editedContacts);
       }
-      let updatedContact = null;
-      if (state.mode === 'edit') {
-        contacts = state.contacts.map(contact => {
-          if (state.currentContact.id === contact.id) {
-            updatedContact = {
-              ...contact,
-              firstName: data[0],
-              lastName: data[1],
-              email: data[2],
-              phone: data[3],
-            };
-            return updatedContact;
-          }
-          return contact;
-        });
-      }
+
       this.pushToLocalStorage(contacts);
       return {
         contacts,
-        currentContact: state.mode === 'add' ? null : updatedContact,
-        mode: state.mode === 'add' ? 'add' : 'edit',
+        currentContact: editedContact,
       };
     });
   };
 
+  onEditContact(contacts, data) {
+    let editedContact = null;
+    const editedContacts = contacts.map(contact => {
+      if (this.state.currentContact.id === contact.id) {
+        editedContact = this.createContact(contact.id, ...data);
+        return editedContact;
+      }
+      return contact;
+    });
+    return { contacts: editedContacts, editedContact };
+  }
+
   render() {
     return (
-      <>
-        <div className='container'>
-          <h1>Contact list</h1>
-          <article className='listAndForm'>
-            <ContactList
-              contacts={this.state.contacts}
-              сontactHandler={this.сontactHandler}
-              onCreateContact={this.onCreateContact}
-              onDeleteContact={this.onDeleteContact}
-            />
-            <ContactForm
-              contacts={this.state.contacts}
-              currentContact={this.state.currentContact}
-              mode={this.state.mode}
-              onSaveContact={this.onSaveContact}
-              onDeleteContact={this.onDeleteContact}
-            />
-          </article>
-        </div>
-      </>
+      <div className={app.container}>
+        <h1>Contact list</h1>
+        <article className={app.listAndForm}>
+          <ContactList
+            contacts={this.state.contacts}
+            сontactHandler={this.сontactHandler}
+            onCreateContact={this.onCreateContact}
+            onDeleteContact={this.onDeleteContact}
+          />
+          <ContactForm
+            currentContact={this.state.currentContact}
+            onSaveContact={this.onSaveContact}
+            onDeleteContact={this.onDeleteContact}
+          />
+        </article>
+      </div>
     );
   }
 }
