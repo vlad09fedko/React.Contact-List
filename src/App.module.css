@@ -4,18 +4,16 @@
   max-width: 900px;
   border: 1px solid #8f8f9d;
   padding: 1em 2em;
-  min-height: 21.5em;
+  min-height: 20.5em;
   position: relative;
 }
 
 h1 {
-  max-width: fit-content;
-  margin: 0.5em auto;
+  margin: 0 auto 0.5em;
 }
 
 .listAndForm {
   display: flex;
-  justify-content: space-between;
   gap: 2em;
 }
 

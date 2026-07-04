@@ -21,12 +21,6 @@ export class ContactForm extends Component {
     }
   }
 
-  inputHandler = event => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
-
   saveHandler = event => {
     event.preventDefault();
     this.props.onSaveContact(
@@ -35,17 +29,18 @@ export class ContactForm extends Component {
       this.state.Email,
       this.state.Phone,
     );
+
     if (this.props.currentContact === null) {
-      this.setState({
-        'First name': '',
-        'Last name': '',
-        Email: '',
-        Phone: '',
+      this.setState(state => {
+        const emptyState = {};
+        Object.keys(state).forEach(key => {
+          emptyState[key] = '';
+        });
+        return emptyState;
       });
     }
   };
 
-  
   render() {
     const { currentContact } = this.props;
     return (
@@ -60,7 +55,9 @@ export class ContactForm extends Component {
               }
               value={this.state[inp]}
               name={inp}
-              onChange={this.inputHandler}
+              onChange={event => {
+                this.setState({ [event.target.name]: event.target.value });
+              }}
             />
             <span
               onClick={() => {

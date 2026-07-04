@@ -19,10 +19,6 @@ export class App extends Component {
     }
   }
 
-  pushToLocalStorage(contacts) {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }
-
   createContact = (id, fName = '', lName = '', email = '', phone = '') => ({
     id: id ? id : uuid(),
     fName,
@@ -31,11 +27,13 @@ export class App extends Component {
     phone,
   });
 
+  pushToLocalStorage(contacts) {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }
+
   сontactHandler = id => {
     this.setState({
-      currentContact: this.state.contacts.filter(
-        contact => id === contact.id,
-      )[0],
+      currentContact: this.state.contacts.find(contact => id === contact.id),
     });
   };
 
@@ -45,7 +43,10 @@ export class App extends Component {
       this.pushToLocalStorage(contacts);
       return {
         contacts,
-        currentContact: null,
+        currentContact:
+          this.state.currentContact?.id === id
+            ? null
+            : this.state.currentContact,
       };
     });
   };
@@ -59,20 +60,16 @@ export class App extends Component {
   onSaveContact = (...data) => {
     this.setState(state => {
       let contacts = [...state.contacts];
-      let editedContact = null;
+      let currentContact = null;
 
       if (state.currentContact === null) {
         contacts.push(this.createContact(null, ...data));
       } else {
-        const editedContacts = this.onEditContact(contacts, data);
-        ({ contacts, editedContact } = editedContacts);
+        ({ contacts, currentContact } = this.onEditContact(contacts, data));
       }
 
       this.pushToLocalStorage(contacts);
-      return {
-        contacts,
-        currentContact: editedContact,
-      };
+      return { contacts, currentContact };
     });
   };
 
@@ -85,7 +82,10 @@ export class App extends Component {
       }
       return contact;
     });
-    return { contacts: editedContacts, editedContact };
+    return {
+      contacts: editedContacts,
+      currentContact: editedContact,
+    };
   }
 
   render() {
