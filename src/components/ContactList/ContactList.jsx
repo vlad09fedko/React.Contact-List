@@ -2,18 +2,18 @@ import { Component } from 'react';
 
 import ContactItem from './ContactItem/ContactItem';
 
-import './contactList.css';
+import styles from './contactList.module.css';
 
 export class ContactList extends Component {
   render() {
     return (
-      <div className='contact-list'>
+      <div className={styles.contactList}>
         <ul>
           {this.props.contacts.map(contact => (
             <li
               key={contact.id}
               onDoubleClick={() => {
-                this.props.сontactHandler(contact.id);
+                this.props.onContactDoubleClick(contact.id);
               }}>
               <ContactItem
                 contact={contact}
@@ -22,7 +22,7 @@ export class ContactList extends Component {
             </li>
           ))}
         </ul>
-        <button onClick={this.props.onCreateContact}>New</button>
+        <button onClick={this.props.onAddNewContact}>New</button>
       </div>
     );
   }

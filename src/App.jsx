@@ -1,105 +1,106 @@
 import { Component } from 'react';
 import { v4 as uuid } from 'uuid';
+import { createEmptyContact, putToStorage } from './functions';
 
 import ContactList from './components/ContactList/ContactList';
 import ContactForm from './components/ContactForm/ContactForm';
 
-import app from './App.module.css';
+import styles from './App.module.css';
 
 export class App extends Component {
   state = {
     contacts: [],
-    currentContact: null,
+    currentContact: createEmptyContact(),
   };
 
   componentDidMount() {
     const contacts = JSON.parse(localStorage.getItem('contacts'));
     if (contacts) {
-      this.setState({ contacts });
+      this.setState({ contacts: [...contacts] });
+    } else {
+      this.setState({ contacts: [] });
     }
   }
 
-  createContact = (id, fName = '', lName = '', email = '', phone = '') => ({
-    id: id ? id : uuid(),
-    fName,
-    lName,
-    email,
-    phone,
-  });
-
-  pushToLocalStorage(contacts) {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }
-
-  сontactHandler = id => {
+  onContactDoubleClick = id => {
     this.setState({
       currentContact: this.state.contacts.find(contact => id === contact.id),
     });
   };
 
-  onDeleteContact = (id = null) => {
+  onDeleteContact = id => {
     this.setState(state => {
       const contacts = state.contacts.filter(contact => contact.id !== id);
-      this.pushToLocalStorage(contacts);
+      putToStorage(contacts);
       return {
         contacts,
         currentContact:
-          this.state.currentContact?.id === id
-            ? null
+          this.state.currentContact.id === id
+            ? createEmptyContact()
             : this.state.currentContact,
       };
     });
   };
 
-  onCreateContact = () => {
+  onAddNewContact = () => {
     this.setState({
-      currentContact: null,
+      currentContact: createEmptyContact(),
     });
   };
 
-  onSaveContact = (...data) => {
+  onSaveContact = formState => {
+    if (this.state.currentContact.id) {
+      this.editContact(formState);
+    } else {
+      this.createContact(formState);
+    }
+  };
+
+  createContact = formState => {
     this.setState(state => {
-      let contacts = [...state.contacts];
-      let currentContact = null;
+      const newContact = {
+        ...formState,
+        id: uuid(),
+      };
+      const contacts = [...state.contacts, newContact];
 
-      if (state.currentContact === null) {
-        contacts.push(this.createContact(null, ...data));
-      } else {
-        ({ contacts, currentContact } = this.onEditContact(contacts, data));
-      }
-
-      this.pushToLocalStorage(contacts);
-      return { contacts, currentContact };
+      putToStorage(contacts);
+      return { contacts };
     });
   };
 
-  onEditContact(contacts, data) {
-    let editedContact = null;
-    const editedContacts = contacts.map(contact => {
-      if (this.state.currentContact.id === contact.id) {
-        editedContact = this.createContact(contact.id, ...data);
-        return editedContact;
-      }
-      return contact;
+  editContact = formState => {
+    this.setState(state => {
+      const id = state.currentContact.id
+      const editedContact = {
+        ...formState,
+        id,
+      };
+      const contacts = state.contacts.map(contact => {
+        if (editedContact.id === contact.id) {
+          return editedContact;
+        }
+        return contact;
+      });
+
+      putToStorage(contacts);
+      return { contacts, currentContact: editedContact };
     });
-    return {
-      contacts: editedContacts,
-      currentContact: editedContact,
-    };
-  }
+  };
 
   render() {
     return (
-      <div className={app.container}>
+      <div className={styles.container}>
         <h1>Contact list</h1>
-        <article className={app.listAndForm}>
+        <article className={styles.listAndForm}>
           <ContactList
             contacts={this.state.contacts}
-            сontactHandler={this.сontactHandler}
-            onCreateContact={this.onCreateContact}
+            onContactDoubleClick={this.onContactDoubleClick}
+            onAddNewContact={this.onAddNewContact}
             onDeleteContact={this.onDeleteContact}
           />
           <ContactForm
+            key={this.state.currentContact.id}
             currentContact={this.state.currentContact}
             onSaveContact={this.onSaveContact}
             onDeleteContact={this.onDeleteContact}

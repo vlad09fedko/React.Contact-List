@@ -1,83 +1,86 @@
 import { Component } from 'react';
+import { createEmptyContact } from '../../functions';
 
-import contactForm from './contactForm.module.css';
+import InputArea from './InputArea/InputArea';
+
+import styles from './contactForm.module.css';
 
 export class ContactForm extends Component {
   state = {
-    'First name': '',
-    'Last name': '',
-    Email: '',
-    Phone: '',
+    ...this.props.currentContact,
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.currentContact !== prevProps.currentContact) {
-      this.setState({
-        'First name': this.props.currentContact?.fName || '',
-        'Last name': this.props.currentContact?.lName || '',
-        Email: this.props.currentContact?.email || '',
-        Phone: this.props.currentContact?.phone || '',
-      });
-    }
-  }
+  inputHandler = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
-  saveHandler = event => {
+  clearInput = event => {
+    this.setState({ [event.target.previousElementSibling.name]: '' });
+  };
+
+  onSaveContact = event => {
     event.preventDefault();
-    this.props.onSaveContact(
-      this.state['First name'],
-      this.state['Last name'],
-      this.state.Email,
-      this.state.Phone,
-    );
+    this.props.onSaveContact(this.state);
 
-    if (this.props.currentContact === null) {
-      this.setState(state => {
-        const emptyState = {};
-        Object.keys(state).forEach(key => {
-          emptyState[key] = '';
-        });
-        return emptyState;
-      });
+    if (this.props.currentContact.id === null) {
+      this.setState(createEmptyContact());
     }
+  };
+
+  deleteContact = () => {
+    this.props.onDeleteContact(this.props.currentContact.id);
   };
 
   render() {
-    const { currentContact } = this.props;
+    const { id } = this.props.currentContact;
     return (
-      <form onSubmit={this.saveHandler}>
-        {Object.keys(this.state).map(inp => (
-          <div key={inp} className={contactForm.inputArea}>
-            <input
-              type={inp === 'Email' ? 'email' : 'text'}
-              placeholder={inp}
-              required={
-                inp === 'First name' || inp === 'Last name' ? true : undefined
-              }
-              value={this.state[inp]}
-              name={inp}
-              onChange={event => {
-                this.setState({ [event.target.name]: event.target.value });
-              }}
-            />
-            <span
-              onClick={() => {
-                this.setState({ [inp]: '' });
-              }}>
-              X
-            </span>
-          </div>
-        ))}
+      <form onSubmit={this.onSaveContact}>
+        <InputArea
+          name='fName'
+          placeholder='First name'
+          type='text'
+          value={this.state.fName}
+          required={true}
+          inputHandler={this.inputHandler}
+          onClearClick={this.clearInput}
+        />
 
-        <div className={contactForm.buttons}>
+        <InputArea
+          name='lName'
+          placeholder='Last name'
+          type='text'
+          value={this.state.lName}
+          required={true}
+          inputHandler={this.inputHandler}
+          onClearClick={this.clearInput}
+        />
+
+        <InputArea
+          name='email'
+          placeholder='Email'
+          type='email'
+          value={this.state.email}
+          inputHandler={this.inputHandler}
+          onClearClick={this.clearInput}
+        />
+
+        <InputArea
+          name='phone'
+          placeholder='Phone'
+          type='tel'
+          value={this.state.phone}
+          inputHandler={this.inputHandler}
+          onClearClick={this.clearInput}
+        />
+
+        <div className={styles.buttons}>
           <input type='submit' value='Save'></input>
           <input
             type='button'
-            onClick={() => {
-              this.props.onDeleteContact(currentContact?.id);
-            }}
+            onClick={this.deleteContact}
             value='Delete'
             style={{
-              visibility: currentContact === null ? 'hidden' : 'visible',
+              visibility: id === null ? 'hidden' : 'visible',
             }}></input>
         </div>
       </form>
