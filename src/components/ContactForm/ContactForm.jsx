@@ -1,91 +1,95 @@
-import { Component } from 'react';
+import { useState } from 'react';
+import propTypes from 'prop-types';
 import { createEmptyContact } from '../../functions';
 
 import InputArea from './InputArea/InputArea';
 
 import styles from './contactForm.module.css';
 
-export class ContactForm extends Component {
-  state = {
-    ...this.props.currentContact,
+function ContactForm({ currentContact, onSaveBtn, onDeleteContact }) {
+  const [contact, setContact] = useState({...currentContact});
+
+  const inputHandler = event => {
+    setContact(prevContact => ({
+      ...prevContact,
+      [event.target.name]: event.target.value,
+    }));
   };
 
-  inputHandler = event => {
-    this.setState({ [event.target.name]: event.target.value });
+  const clearInput = event => {
+    setContact(prevContact => ({
+      ...prevContact,
+      [event.target.previousElementSibling.name]: '',
+    }));
   };
 
-  clearInput = event => {
-    this.setState({ [event.target.previousElementSibling.name]: '' });
-  };
-
-  onSaveContact = event => {
+  const saveContact = event => {
     event.preventDefault();
-    this.props.onSaveContact(this.state);
+    onSaveBtn(contact);
 
-    if (this.props.currentContact.id === null) {
-      this.setState(createEmptyContact());
+    if (currentContact.id === null) {
+      setContact(createEmptyContact());
     }
   };
 
-  deleteContact = () => {
-    this.props.onDeleteContact(this.props.currentContact.id);
-  };
+  return (
+    <form onSubmit={saveContact}>
+      <InputArea
+        name='fName'
+        placeholder='First name'
+        type='text'
+        value={contact.fName}
+        isRequired={true}
+        inputHandler={inputHandler}
+        onClearClick={clearInput}
+      />
 
-  render() {
-    const { id } = this.props.currentContact;
-    return (
-      <form onSubmit={this.onSaveContact}>
-        <InputArea
-          name='fName'
-          placeholder='First name'
-          type='text'
-          value={this.state.fName}
-          required={true}
-          inputHandler={this.inputHandler}
-          onClearClick={this.clearInput}
-        />
+      <InputArea
+        name='lName'
+        placeholder='Last name'
+        type='text'
+        value={contact.lName}
+        isRequired={true}
+        inputHandler={inputHandler}
+        onClearClick={clearInput}
+      />
 
-        <InputArea
-          name='lName'
-          placeholder='Last name'
-          type='text'
-          value={this.state.lName}
-          required={true}
-          inputHandler={this.inputHandler}
-          onClearClick={this.clearInput}
-        />
+      <InputArea
+        name='email'
+        placeholder='Email'
+        type='email'
+        value={contact.email}
+        inputHandler={inputHandler}
+        onClearClick={clearInput}
+      />
 
-        <InputArea
-          name='email'
-          placeholder='Email'
-          type='email'
-          value={this.state.email}
-          inputHandler={this.inputHandler}
-          onClearClick={this.clearInput}
-        />
+      <InputArea
+        name='phone'
+        placeholder='Phone'
+        type='tel'
+        value={contact.phone}
+        inputHandler={inputHandler}
+        onClearClick={clearInput}
+      />
 
-        <InputArea
-          name='phone'
-          placeholder='Phone'
-          type='tel'
-          value={this.state.phone}
-          inputHandler={this.inputHandler}
-          onClearClick={this.clearInput}
-        />
-
-        <div className={styles.buttons}>
-          <input type='submit' value='Save'></input>
-          <input
-            type='button'
-            onClick={this.deleteContact}
-            value='Delete'
-            style={{
-              visibility: id === null ? 'hidden' : 'visible',
-            }}></input>
-        </div>
-      </form>
-    );
-  }
+      <div className={styles.buttons}>
+        <input type='submit' value='Save'></input>
+        <input
+          type='button'
+          onClick={() => {
+            onDeleteContact(currentContact.id);
+          }}
+          value='Delete'
+          style={{
+            visibility: contact.id === null ? 'hidden' : 'visible',
+          }}></input>
+      </div>
+    </form>
+  );
 }
+
+ContactForm.propTypes = {
+  onSaveBtn: propTypes.func.isRequired,
+};
 
 export default ContactForm;

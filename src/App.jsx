@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { createEmptyContact, putToStorage } from './functions';
 
@@ -7,108 +7,86 @@ import ContactForm from './components/ContactForm/ContactForm';
 
 import styles from './App.module.css';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    currentContact: createEmptyContact(),
+function App() {
+  const [contacts, setContacts] = useState([]);
+  const [currentContact, setCurrentContact] = useState(createEmptyContact());
+
+  useEffect(() => {
+    const downloadedContacts = JSON.parse(localStorage.getItem('contacts'));
+    setContacts(downloadedContacts ? downloadedContacts : []);
+  }, []);
+
+  const onContactDoubleClick = id => {
+    setCurrentContact(contacts.find(contact => id === contact.id));
   };
 
-  componentDidMount() {
-    const contacts = JSON.parse(localStorage.getItem('contacts'));
-    if (contacts) {
-      this.setState({ contacts: [...contacts] });
-    } else {
-      this.setState({ contacts: [] });
-    }
-  }
-
-  onContactDoubleClick = id => {
-    this.setState({
-      currentContact: this.state.contacts.find(contact => id === contact.id),
-    });
-  };
-
-  onDeleteContact = id => {
-    this.setState(state => {
-      const contacts = state.contacts.filter(contact => contact.id !== id);
-      putToStorage(contacts);
-      return {
-        contacts,
-        currentContact:
-          this.state.currentContact.id === id
-            ? createEmptyContact()
-            : this.state.currentContact,
-      };
-    });
-  };
-
-  onAddNewContact = () => {
-    this.setState({
-      currentContact: createEmptyContact(),
-    });
-  };
-
-  onSaveContact = formState => {
-    if (this.state.currentContact.id) {
-      this.editContact(formState);
-    } else {
-      this.createContact(formState);
-    }
-  };
-
-  createContact = formState => {
-    this.setState(state => {
-      const newContact = {
-        ...formState,
-        id: uuid(),
-      };
-      const contacts = [...state.contacts, newContact];
-
-      putToStorage(contacts);
-      return { contacts };
-    });
-  };
-
-  editContact = formState => {
-    this.setState(state => {
-      const id = state.currentContact.id
-      const editedContact = {
-        ...formState,
-        id,
-      };
-      const contacts = state.contacts.map(contact => {
-        if (editedContact.id === contact.id) {
-          return editedContact;
-        }
-        return contact;
-      });
-
-      putToStorage(contacts);
-      return { contacts, currentContact: editedContact };
-    });
-  };
-
-  render() {
-    return (
-      <div className={styles.container}>
-        <h1>Contact list</h1>
-        <article className={styles.listAndForm}>
-          <ContactList
-            contacts={this.state.contacts}
-            onContactDoubleClick={this.onContactDoubleClick}
-            onAddNewContact={this.onAddNewContact}
-            onDeleteContact={this.onDeleteContact}
-          />
-          <ContactForm
-            key={this.state.currentContact.id}
-            currentContact={this.state.currentContact}
-            onSaveContact={this.onSaveContact}
-            onDeleteContact={this.onDeleteContact}
-          />
-        </article>
-      </div>
+  const onDeleteContact = id => {
+    const newContacts = contacts.filter(contact => contact.id !== id);
+    putToStorage(newContacts);
+    setContacts(newContacts);
+    setCurrentContact(
+      currentContact.id === id ? createEmptyContact() : currentContact,
     );
-  }
+  };
+
+  const onAddNewContact = () => {
+    setCurrentContact(createEmptyContact());
+  };
+
+  const onSaveBtn = formState => {
+    if (currentContact.id) {
+      editContact(formState);
+    } else {
+      createContact(formState);
+    }
+  };
+
+  const createContact = formState => {
+    const newContact = {
+      ...formState,
+      id: uuid(),
+    };
+    const newContacts = [...contacts, newContact];
+
+    putToStorage(newContacts);
+    setContacts(newContacts);
+  };
+
+  const editContact = formState => {
+    const editedContact = {
+      ...formState,
+      id: currentContact.id,
+    };
+    const editedContacts = contacts.map(contact => {
+      if (editedContact.id === contact.id) {
+        return editedContact;
+      }
+      return contact;
+    });
+
+    putToStorage(editedContacts);
+    setContacts(editedContacts);
+  };
+
+  return (
+    <div className={styles.container}>
+      <h1>Contact list</h1>
+      <article className={styles.listAndForm}>
+        <ContactList
+          contacts={contacts}
+          onContactDoubleClick={onContactDoubleClick}
+          onAddNewContact={onAddNewContact}
+          onDeleteContact={onDeleteContact}
+        />
+        <ContactForm
+          key={currentContact.id}
+          currentContact={currentContact}
+          onSaveBtn={onSaveBtn}
+          onDeleteContact={onDeleteContact}
+        />
+      </article>
+    </div>
+  );
 }
 
 export default App;

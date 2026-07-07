@@ -26,7 +26,7 @@ export default defineConfig([
     rules: {
       'no-unused-vars': 'warn',
       'no-undef': 'error',
-      eqeqeq: 'error',
+      'eqeqeq': 'error',
       'no-console': 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
@@ -38,6 +38,7 @@ export default defineConfig([
       'react/jsx-key': 'error',
       'react-hooks/exhaustive-deps': 'error',
       'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/set-state-in-effect': 'warn',
     },
   },
 ]);
