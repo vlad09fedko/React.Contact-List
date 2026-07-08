@@ -38,7 +38,6 @@ export default defineConfig([
       'react/jsx-key': 'error',
       'react-hooks/exhaustive-deps': 'error',
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/set-state-in-effect': 'warn',
     },
   },
 ]);

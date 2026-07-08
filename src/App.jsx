@@ -11,10 +11,12 @@ function App() {
   const [contacts, setContacts] = useState([]);
   const [currentContact, setCurrentContact] = useState(createEmptyContact());
 
-  useEffect(() => {
+  useEffect(getFromStorage, []);
+
+  function getFromStorage() {
     const downloadedContacts = JSON.parse(localStorage.getItem('contacts'));
     setContacts(downloadedContacts ? downloadedContacts : []);
-  }, []);
+  }
 
   const onContactDoubleClick = id => {
     setCurrentContact(contacts.find(contact => id === contact.id));
