@@ -1,12 +1,21 @@
 import propTypes from 'prop-types';
 
+import { createEmptyContact } from '../../functions';
+
 import ContactItem from './ContactItem/ContactItem';
 
 import styles from './contactList.module.css';
 
 function ContactList(props) {
-  const { contacts, onContactDoubleClick, onDeleteContact, onAddNewContact } =
-    props;
+  const { contacts, setCurrentContact, onDeleteContact } = props;
+
+  const onContactDoubleClick = id => {
+    setCurrentContact(contacts.find(contact => id === contact.id));
+  };
+
+  const onAddNewContact = () => {
+    setCurrentContact(createEmptyContact());
+  };
 
   return (
     <div className={styles.contactList}>
