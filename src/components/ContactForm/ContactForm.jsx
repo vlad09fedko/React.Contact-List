@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { createEmptyContact } from '../../functions';
 
@@ -6,8 +6,12 @@ import InputArea from './InputArea/InputArea';
 
 import styles from './contactForm.module.css';
 
-function ContactForm({ currentContact, onSaveBtn, onDeleteContact }) {
-  const [contact, setContact] = useState({...currentContact});
+function ContactForm({ currentContact, saveContact, onDeleteContact }) {
+  const [contact, setContact] = useState(createEmptyContact);
+
+  useEffect(() => {
+    setContact(currentContact);
+  }, [currentContact]);
 
   const inputHandler = event => {
     setContact(prevContact => ({
@@ -23,9 +27,9 @@ function ContactForm({ currentContact, onSaveBtn, onDeleteContact }) {
     }));
   };
 
-  const saveContact = event => {
+  const onSaveBtn = event => {
     event.preventDefault();
-    onSaveBtn(contact);
+    saveContact(contact);
 
     if (currentContact.id === null) {
       setContact(createEmptyContact());
@@ -33,7 +37,7 @@ function ContactForm({ currentContact, onSaveBtn, onDeleteContact }) {
   };
 
   return (
-    <form onSubmit={saveContact}>
+    <form onSubmit={onSaveBtn}>
       <InputArea
         name='fName'
         placeholder='First name'

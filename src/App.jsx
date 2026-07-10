@@ -35,7 +35,7 @@ function App() {
     setCurrentContact(createEmptyContact());
   };
 
-  const onSaveBtn = formState => {
+  const saveContact = formState => {
     if (currentContact.id) {
       editContact(formState);
     } else {
@@ -43,22 +43,15 @@ function App() {
     }
   };
 
-  const createContact = formState => {
-    const newContact = {
-      ...formState,
-      id: uuid(),
-    };
+  const createContact = newContact => {
+    newContact.id = uuid();
     const newContacts = [...contacts, newContact];
 
     putToStorage(newContacts);
     setContacts(newContacts);
   };
 
-  const editContact = formState => {
-    const editedContact = {
-      ...formState,
-      id: currentContact.id,
-    };
+  const editContact = editedContact => {
     const editedContacts = contacts.map(contact => {
       if (editedContact.id === contact.id) {
         return editedContact;
@@ -83,7 +76,7 @@ function App() {
         <ContactForm
           key={currentContact.id}
           currentContact={currentContact}
-          onSaveBtn={onSaveBtn}
+          saveContact={saveContact}
           onDeleteContact={onDeleteContact}
         />
       </article>
