@@ -2,7 +2,7 @@ import './contactItem.css';
 
 function ContactItem({ contact, onDeleteContact }) {
   const { fName, lName, id } = contact;
-
+  
   return (
     <>
       <p>{`${fName} ${lName}`}</p>

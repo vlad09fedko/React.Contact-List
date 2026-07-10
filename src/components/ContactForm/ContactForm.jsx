@@ -1,65 +1,47 @@
 import { useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import propTypes from 'prop-types';
-
-import { createEmptyContact, putToStorage } from '../../functions';
+import { createEmptyContact } from '../../functions';
 
 import InputArea from './InputArea/InputArea';
 
 import styles from './contactForm.module.css';
 
-function ContactForm(props) {
-  const { contacts, currentContact, setContacts, onDeleteContact } = props;
+function ContactForm({ currentContact, onSaveBtn, onDeleteContact }) {
+  const [contact, setContact] = useState({...currentContact});
 
-  const [contact, setContact] = useState({ ...currentContact });
+  const inputHandler = event => {
+    setContact(prevContact => ({
+      ...prevContact,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
-  const onSaveBtn = event => {
+  const clearInput = event => {
+    setContact(prevContact => ({
+      ...prevContact,
+      [event.target.previousElementSibling.name]: '',
+    }));
+  };
+
+  const saveContact = event => {
     event.preventDefault();
+    onSaveBtn(contact);
 
-    if (currentContact.id) {
-      editContact(contact);
-    } else {
-      createContact(contact);
+    if (currentContact.id === null) {
       setContact(createEmptyContact());
     }
   };
 
-  const createContact = formState => {
-    const newContact = {
-      ...formState,
-      id: uuid(),
-    };
-    const newContacts = [...contacts, newContact];
-
-    putToStorage(newContacts);
-    setContacts(newContacts);
-  };
-
-  const editContact = formState => {
-    const editedContact = {
-      ...formState,
-      id: currentContact.id,
-    };
-    const editedContacts = contacts.map(contact => {
-      if (editedContact.id === contact.id) {
-        return editedContact;
-      }
-      return contact;
-    });
-
-    putToStorage(editedContacts);
-    setContacts(editedContacts);
-  };
-
   return (
-    <form onSubmit={onSaveBtn}>
+    <form onSubmit={saveContact}>
       <InputArea
         name='fName'
         placeholder='First name'
         type='text'
         value={contact.fName}
         isRequired={true}
-        setContact={setContact}
+        inputHandler={inputHandler}
+        onClearClick={clearInput}
       />
 
       <InputArea
@@ -68,7 +50,8 @@ function ContactForm(props) {
         type='text'
         value={contact.lName}
         isRequired={true}
-        setContact={setContact}
+        inputHandler={inputHandler}
+        onClearClick={clearInput}
       />
 
       <InputArea
@@ -76,7 +59,8 @@ function ContactForm(props) {
         placeholder='Email'
         type='email'
         value={contact.email}
-        setContact={setContact}
+        inputHandler={inputHandler}
+        onClearClick={clearInput}
       />
 
       <InputArea
@@ -84,7 +68,8 @@ function ContactForm(props) {
         placeholder='Phone'
         type='tel'
         value={contact.phone}
-        setContact={setContact}
+        inputHandler={inputHandler}
+        onClearClick={clearInput}
       />
 
       <div className={styles.buttons}>
