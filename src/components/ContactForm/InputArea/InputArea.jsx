@@ -1,16 +1,14 @@
 import styles from './inputArea.module.css';
 
-function InputArea(props) {
-  const {
-    name,
-    placeholder,
-    type,
-    value,
-    isRequired,
-    inputHandler,
-    onClearClick,
-  } = props;
-
+function InputArea({
+  name,
+  placeholder,
+  type,
+  value,
+  isRequired,
+  inputHandler,
+  onClearClick,
+}) {
   return (
     <div key={name} className={styles.inputArea}>
       <input

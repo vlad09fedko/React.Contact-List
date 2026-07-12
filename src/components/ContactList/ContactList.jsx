@@ -4,10 +4,12 @@ import ContactItem from './ContactItem/ContactItem';
 
 import styles from './contactList.module.css';
 
-function ContactList(props) {
-  const { contacts, onContactDoubleClick, onDeleteContact, onAddNewContact } =
-    props;
-
+function ContactList({
+  contacts,
+  onContactDoubleClick,
+  onDeleteContact,
+  onAddNewContact,
+}) {
   return (
     <div className={styles.contactList}>
       <ul>

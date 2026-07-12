@@ -74,7 +74,6 @@ function App() {
           onDeleteContact={onDeleteContact}
         />
         <ContactForm
-          key={currentContact.id}
           currentContact={currentContact}
           saveContact={saveContact}
           onDeleteContact={onDeleteContact}

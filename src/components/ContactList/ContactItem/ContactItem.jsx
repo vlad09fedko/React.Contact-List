@@ -1,8 +1,6 @@
 import './contactItem.css';
 
-function ContactItem({ contact, onDeleteContact }) {
-  const { fName, lName, id } = contact;
-  
+function ContactItem({ contact: { fName, lName, id }, onDeleteContact }) {
   return (
     <>
       <p>{`${fName} ${lName}`}</p>
