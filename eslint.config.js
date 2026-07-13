@@ -43,4 +43,4 @@ export default defineConfig([
   },
 ]);
 
-// to install dependencies for eslint use the key --legacy-peer-deps
+// to install all dependencies use the key --legacy-peer-deps

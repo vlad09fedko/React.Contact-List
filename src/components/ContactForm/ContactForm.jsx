@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
-import { createEmptyContact } from '../../functions';
+import createEmptyContact from '../../createEmptyContact';
 
 import InputArea from './InputArea/InputArea';
 

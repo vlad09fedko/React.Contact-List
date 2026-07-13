@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
-import { createEmptyContact, putToStorage } from './functions';
+
+import api from './api/contact-service';
+import createEmptyContact from './createEmptyContact';
 
 import ContactList from './components/ContactList/ContactList';
 import ContactForm from './components/ContactForm/ContactForm';
@@ -11,56 +12,63 @@ function App() {
   const [contacts, setContacts] = useState([]);
   const [currentContact, setCurrentContact] = useState(createEmptyContact());
 
-  useEffect(getFromStorage, []);
-
-  function getFromStorage() {
-    const downloadedContacts = JSON.parse(localStorage.getItem('contacts'));
-    setContacts(downloadedContacts ? downloadedContacts : []);
-  }
+  useEffect(() => {
+    api.get('/').then(({ data }) => {
+      setContacts(data ? data : []);
+    });
+  }, []);
 
   const onContactDoubleClick = id => {
     setCurrentContact(contacts.find(contact => id === contact.id));
   };
 
   const onDeleteContact = id => {
-    const newContacts = contacts.filter(contact => contact.id !== id);
-    putToStorage(newContacts);
-    setContacts(newContacts);
-    setCurrentContact(
-      currentContact.id === id ? createEmptyContact() : currentContact,
-    );
+    api
+      .delete(`/${id}`)
+      .then(({ data }) => {
+        setContacts(contacts.filter(contact => contact.id !== data.id));
+        setCurrentContact(
+          currentContact.id === data.id ? createEmptyContact() : currentContact,
+        );
+      })
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
   };
 
   const onAddNewContact = () => {
     setCurrentContact(createEmptyContact());
   };
 
-  const saveContact = formState => {
+  const saveContact = contact => {
     if (currentContact.id) {
-      editContact(formState);
+      editContact(contact);
     } else {
-      createContact(formState);
+      createContact(contact);
     }
   };
 
   const createContact = newContact => {
-    newContact.id = uuid();
-    const newContacts = [...contacts, newContact];
-
-    putToStorage(newContacts);
-    setContacts(newContacts);
+    api.post('/', newContact).then(({ data }) => {
+      setContacts([...contacts, data]);
+    });
   };
 
   const editContact = editedContact => {
-    const editedContacts = contacts.map(contact => {
-      if (editedContact.id === contact.id) {
-        return editedContact;
-      }
-      return contact;
-    });
-
-    putToStorage(editedContacts);
-    setContacts(editedContacts);
+    api
+      .put(`/${currentContact.id}`, editedContact)
+      .then(({ data }) => {
+        setContacts(
+          contacts.map(contact =>
+            contact.id === editedContact.id ? data : contact,
+          ),
+        );
+      })
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
   };
 
   return (
