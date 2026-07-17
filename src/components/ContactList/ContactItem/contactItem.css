@@ -11,6 +11,6 @@ span {
 }
 
 span:hover {
-  color: whitesmoke;
+  color: var(--item-border-hover);
   transition: 0.2s;
 }

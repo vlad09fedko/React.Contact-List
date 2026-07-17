@@ -1,14 +1,14 @@
 .inputArea {
   height: 2.5em;
   display: flex;
-  background-color: #2b2a33;
-  border: 1px solid #8f8f9d;
+  background-color: var(--item-bg);
+  border: 1px solid var(--item-border);
   transition: 0.2s;
   cursor: pointer;
 }
 
 .inputArea:hover {
-  border-color: whitesmoke;
+  border-color: var(--item-border-hover);
 }
 
 .inputArea > input {
@@ -17,5 +17,5 @@
   font-size: 1em;
   border: none;
   outline: none;
-  background-color: #2b2a33;
+  background-color: var(--item-bg);
 }

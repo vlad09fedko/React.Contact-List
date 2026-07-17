@@ -2,6 +2,10 @@
   padding-bottom: 3em;
 }
 
+.contactList > p {
+  font-size: 1.5em;
+}
+
 ul {
   list-style-type: none;
   padding-left: 0;
@@ -15,7 +19,7 @@ li {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  border: 1px solid #8f8f9d;
+  border: 1px solid var(--item-border);
   transition: 0.2s;
   text-align: start;
   min-height: 2.5em;
@@ -23,7 +27,7 @@ li {
 }
 
 li:hover {
-  border-color: whitesmoke;
+  border-color: var(--item-border-hover);
 }
 
 button {

@@ -12,17 +12,23 @@ function ContactList({
 }) {
   return (
     <div className={styles.contactList}>
-      <ul>
-        {contacts.map(contact => (
-          <li
-            key={contact.id}
-            onDoubleClick={() => {
-              onContactDoubleClick(contact.id);
-            }}>
-            <ContactItem contact={contact} onDeleteContact={onDeleteContact} />
-          </li>
-        ))}
-      </ul>
+      {!contacts.length && <p>List is empty.</p>}
+      {!!contacts.length && (
+        <ul>
+          {contacts.map(contact => (
+            <li
+              key={contact.id}
+              onDoubleClick={() => {
+                onContactDoubleClick(contact.id);
+              }}>
+              <ContactItem
+                contact={contact}
+                onDeleteContact={onDeleteContact}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
       <button onClick={onAddNewContact}>New</button>
     </div>
   );
