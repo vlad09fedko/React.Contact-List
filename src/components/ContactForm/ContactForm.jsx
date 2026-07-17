@@ -13,17 +13,17 @@ function ContactForm({ currentContact, saveContact, onDeleteContact }) {
     setContact(currentContact);
   }, [currentContact]);
 
-  const inputHandler = event => {
+  const inputHandler = ({ target }) => {
     setContact(prevContact => ({
       ...prevContact,
-      [event.target.name]: event.target.value,
+      [target.name]: target.value,
     }));
   };
 
-  const clearInput = event => {
+  const clearInput = ({ target }) => {
     setContact(prevContact => ({
       ...prevContact,
-      [event.target.previousElementSibling.name]: '',
+      [target.previousElementSibling.name]: '',
     }));
   };
 
@@ -31,7 +31,7 @@ function ContactForm({ currentContact, saveContact, onDeleteContact }) {
     event.preventDefault();
     saveContact(contact);
 
-    if (currentContact.id === null) {
+    if (!currentContact.id) {
       setContact(createEmptyContact());
     }
   };
@@ -85,7 +85,7 @@ function ContactForm({ currentContact, saveContact, onDeleteContact }) {
           }}
           value='Delete'
           style={{
-            visibility: contact.id === null ? 'hidden' : 'visible',
+            visibility: !contact.id ? 'hidden' : 'visible',
           }}></input>
       </div>
     </form>
