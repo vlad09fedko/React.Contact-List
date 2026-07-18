@@ -1,5 +1,3 @@
-import propTypes from 'prop-types';
-
 import ContactItem from './ContactItem/ContactItem';
 
 import styles from './contactList.module.css';
@@ -16,16 +14,12 @@ function ContactList({
       {!!contacts.length && (
         <ul>
           {contacts.map(contact => (
-            <li
+            <ContactItem
               key={contact.id}
-              onDoubleClick={() => {
-                onContactDoubleClick(contact.id);
-              }}>
-              <ContactItem
-                contact={contact}
-                onDeleteContact={onDeleteContact}
-              />
-            </li>
+              contact={contact}
+              onContactDoubleClick={onContactDoubleClick}
+              onDeleteContact={onDeleteContact}
+            />
           ))}
         </ul>
       )}
@@ -33,13 +27,5 @@ function ContactList({
     </div>
   );
 }
-
-ContactList.propTypes = {
-  contacts: propTypes.array,
-};
-
-ContactList.defaultProps = {
-  contacts: [],
-};
 
 export default ContactList;

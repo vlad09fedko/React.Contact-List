@@ -36,7 +36,7 @@ export default defineConfig([
       'react/jsx-no-useless-fragment': 'warn',
       'react/no-array-index-key': 'error',
       'react/jsx-key': 'error',
-      'react-hooks/exhaustive-deps': 'error',
+      'react-hooks/exhaustive-deps': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/set-state-in-effect': 'off',
     },

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import propTypes from 'prop-types';
 import createEmptyContact from '../../createEmptyContact';
 
 import InputArea from './InputArea/InputArea';
@@ -80,9 +79,7 @@ function ContactForm({ currentContact, saveContact, onDeleteContact }) {
         <input type='submit' value='Save'></input>
         <input
           type='button'
-          onClick={() => {
-            onDeleteContact(currentContact.id);
-          }}
+          onClick={() => onDeleteContact(currentContact.id)}
           value='Delete'
           style={{
             visibility: !contact.id ? 'hidden' : 'visible',
@@ -91,9 +88,5 @@ function ContactForm({ currentContact, saveContact, onDeleteContact }) {
     </form>
   );
 }
-
-ContactForm.propTypes = {
-  onSaveBtn: propTypes.func.isRequired,
-};
 
 export default ContactForm;
