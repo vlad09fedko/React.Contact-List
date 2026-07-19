@@ -1,13 +1,26 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import createEmptyContact from '../../createEmptyContact';
+import { emptyContact } from '../../constants/constants';
+import {
+  addContact,
+  changeContact,
+  deleteContact,
+} from '../../store/actions/contactActions';
+import api from '../../api/contact-service';
 
 import InputArea from './InputArea/InputArea';
 
 import styles from './contactForm.module.css';
 
-function ContactForm({ currentContact, saveContact, onDeleteContact }) {
-  const [contact, setContact] = useState(createEmptyContact);
+function ContactForm() {
+  const [contact, setContact] = useState({ ...emptyContact });
+
+  const dispatch = useDispatch();
+
+  const currentContact = useSelector(
+    state => state.currentContactObj.currentContact,
+  );
 
   useEffect(() => {
     setContact(currentContact);
@@ -27,17 +40,32 @@ function ContactForm({ currentContact, saveContact, onDeleteContact }) {
     }));
   };
 
-  const onSaveBtn = event => {
+  const onFormSubmit = event => {
     event.preventDefault();
-    saveContact(contact);
 
-    if (!currentContact.id) {
-      setContact(createEmptyContact());
+    if (contact.id) {
+      api
+        .put(`/contacts/${contact.id}`, contact)
+        .then(({ data }) => dispatch(changeContact(data)));
+    } else {
+      api
+        .post('/contacts', contact)
+        .then(({ data }) => dispatch(addContact(data)));
+    }
+
+    if (!contact.id) {
+      setContact({ ...emptyContact });
     }
   };
 
+  const onDeleteContact = () => {
+    api
+      .delete(`/contacts/${contact.id}`)
+      .then(({ data }) => dispatch(deleteContact(data.id)));
+  };
+
   return (
-    <form onSubmit={onSaveBtn}>
+    <form onSubmit={onFormSubmit}>
       <InputArea
         name='fName'
         placeholder='First name'
@@ -80,10 +108,10 @@ function ContactForm({ currentContact, saveContact, onDeleteContact }) {
         <input type='submit' value='Save'></input>
         <input
           type='button'
-          onClick={() => onDeleteContact(currentContact.id)}
+          onClick={onDeleteContact}
           value='Delete'
           style={{
-            visibility: !contact.id ? 'hidden' : 'visible',
+            visibility: contact.id ? 'visible' : 'hidden',
           }}></input>
       </div>
     </form>

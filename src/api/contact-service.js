@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+import { BASE_URL as baseURL } from '../constants/constants';
+
 export default axios.create({
-  baseURL: 'http://localhost:5000/contacts/',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
