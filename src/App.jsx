@@ -42,11 +42,7 @@ function App() {
   };
 
   const saveContact = contact => {
-    if (currentContact.id) {
-      editContact(contact);
-    } else {
-      createContact(contact);
-    }
+    currentContact.id ? editContact(contact) : createContact(contact);
   };
 
   const createContact = newContact => {
