@@ -30,3 +30,4 @@ export const deleteContact = id => ({
   type: ACTION_TYPES.DELETE_CONTACT,
   payload: id,
 });
+ 
