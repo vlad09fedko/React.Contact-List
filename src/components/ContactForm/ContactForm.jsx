@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { emptyContact } from '../../constants/constants';
+import api from '../../api/contact-service';
+import { EMPTY_CONTACT } from '../../constants/constants';
 import {
   addContact,
   changeContact,
   deleteContact,
 } from '../../store/actions/contactActions';
-import api from '../../api/contact-service';
 
 import InputArea from './InputArea/InputArea';
 
 import styles from './contactForm.module.css';
 
 function ContactForm() {
-  const [contact, setContact] = useState({ ...emptyContact });
+  const [contact, setContact] = useState({ ...EMPTY_CONTACT });
 
   const dispatch = useDispatch();
 
@@ -26,10 +26,10 @@ function ContactForm() {
     setContact(currentContact);
   }, [currentContact]);
 
-  const inputHandler = ({ target }) => {
+  const inputHandler = ({ target: { name, value } }) => {
     setContact(prevContact => ({
       ...prevContact,
-      [target.name]: target.value,
+      [name]: value,
     }));
   };
 
@@ -54,7 +54,7 @@ function ContactForm() {
     }
 
     if (!contact.id) {
-      setContact({ ...emptyContact });
+      setContact({ ...EMPTY_CONTACT });
     }
   };
 

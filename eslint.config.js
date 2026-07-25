@@ -1,10 +1,10 @@
+import eslintReact from '@eslint-react/eslint-plugin';
 import js from '@eslint/js';
-import globals from 'globals';
-import reactPlugin from 'eslint-plugin-react';
-import importPlugin from 'eslint-plugin-import';
+import importXPlugin from 'eslint-plugin-import-x';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import globals from 'globals';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -16,8 +16,8 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     plugins: {
-      import: importPlugin,
-      react: reactPlugin,
+      'import-x': importXPlugin,
+      '@eslint-react': eslintReact,
     },
     languageOptions: {
       globals: globals.browser,
@@ -28,19 +28,28 @@ export default defineConfig([
       'no-undef': 'error',
       'eqeqeq': 'error',
       'no-console': 'warn',
-      'prefer-const': 'error',
+      'prefer-const': 'warn',
       'no-var': 'error',
       'object-shorthand': 'error',
-      'import/order': 'error',
-      'import/no-unused-modules': 'warn',
-      'react/jsx-no-useless-fragment': 'warn',
-      'react/no-array-index-key': 'error',
-      'react/jsx-key': 'error',
+      'arrow-parents': 'off',
+
+      'import-x/order': 'warn',
+      'import-x/no-unused-modules': [
+        'warn',
+        {
+          unusedExports: true,
+          missingExports: false,
+          suppressMissingFileEnumeratorAPIWarning: true,
+        },
+      ],
+
+      '@eslint-react/jsx-no-useless-fragment': 'warn',
+      '@eslint-react/no-array-index-key': 'error',
+      '@eslint-react/no-missing-key': 'error',
+
       'react-hooks/exhaustive-deps': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/set-state-in-effect': 'off',
     },
   },
 ]);
-
-// to install all dependencies use the key --legacy-peer-deps

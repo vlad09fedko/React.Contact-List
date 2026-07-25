@@ -1,5 +1,5 @@
+import { EMPTY_CONTACT } from '../../constants/constants';
 import ACTION_TYPES from './actionTypes';
-import { emptyContact } from '../../constants/constants';
 
 export const getContacts = contacts => ({
   type: ACTION_TYPES.GET_CONTACTS,
@@ -13,7 +13,7 @@ export const chooseContact = contact => ({
 
 export const switchModeToAddContact = () => ({
   type: ACTION_TYPES.SWITCH_MODE_TO_ADD_CONTACT,
-  payload: emptyContact,
+  payload: EMPTY_CONTACT,
 });
 
 export const addContact = contact => ({

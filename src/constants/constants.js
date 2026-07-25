@@ -1,6 +1,6 @@
 export const BASE_URL = 'http://localhost:5000';
 
-export const emptyContact = {
+export const EMPTY_CONTACT = {
   id: null,
   fName: '',
   lName: '',

@@ -1,4 +1,4 @@
-import { emptyContact } from '../constants/constants';
+import { EMPTY_CONTACT } from '../constants/constants';
 
 export const contactsState = [
   {
@@ -10,4 +10,4 @@ export const contactsState = [
   },
 ];
 
-export const currentContactState = { ...emptyContact };
+export const currentContactState = { ...EMPTY_CONTACT };

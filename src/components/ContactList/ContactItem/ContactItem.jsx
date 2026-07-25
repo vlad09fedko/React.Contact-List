@@ -14,7 +14,7 @@ function ContactItem({ contact }) {
   const onDeleteBtnClick = () => {
     api
       .delete(`/contacts/${contact.id}`)
-      .then(({ data }) => dispatch(deleteContact(data.id)));
+      .then(({ data: { id } }) => dispatch(deleteContact(id)));
   };
 
   return (
