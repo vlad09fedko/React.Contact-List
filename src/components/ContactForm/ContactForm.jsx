@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import api from '../../api/contact-service';
 import { EMPTY_CONTACT } from '../../constants/constants';
 import {
-  addContact,
-  changeContact,
-  deleteContact,
+  createContactAction,
+  deleteContactAction,
+  updateContactAction,
 } from '../../store/actions/contactActions';
 
 import InputArea from './InputArea/InputArea';
@@ -44,13 +43,9 @@ function ContactForm() {
     event.preventDefault();
 
     if (contact.id) {
-      api
-        .put(`/contacts/${contact.id}`, contact)
-        .then(({ data }) => dispatch(changeContact(data)));
+      dispatch(updateContactAction(contact));
     } else {
-      api
-        .post('/contacts', contact)
-        .then(({ data }) => dispatch(addContact(data)));
+      dispatch(createContactAction(contact));
     }
 
     if (!contact.id) {
@@ -58,11 +53,6 @@ function ContactForm() {
     }
   };
 
-  const onDeleteContact = () => {
-    api
-      .delete(`/contacts/${contact.id}`)
-      .then(({ data }) => dispatch(deleteContact(data.id)));
-  };
 
   return (
     <form onSubmit={onFormSubmit}>
@@ -108,7 +98,7 @@ function ContactForm() {
         <input type='submit' value='Save'></input>
         <input
           type='button'
-          onClick={onDeleteContact}
+          onClick={() => dispatch(deleteContactAction(contact.id))}
           value='Delete'
           style={{
             visibility: contact.id ? 'visible' : 'hidden',

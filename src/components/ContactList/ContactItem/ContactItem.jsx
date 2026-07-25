@@ -1,9 +1,8 @@
 import { useDispatch } from 'react-redux';
 
-import api from '../../../api/contact-service';
 import {
   chooseContact,
-  deleteContact,
+  deleteContactAction,
 } from '../../../store/actions/contactActions';
 
 import './contactItem.css';
@@ -12,9 +11,7 @@ function ContactItem({ contact }) {
   const dispatch = useDispatch();
 
   const onDeleteBtnClick = () => {
-    api
-      .delete(`/contacts/${contact.id}`)
-      .then(({ data: { id } }) => dispatch(deleteContact(id)));
+    dispatch(deleteContactAction(contact.id));
   };
 
   return (

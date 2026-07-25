@@ -3,6 +3,8 @@ import { applyMiddleware, createStore } from 'redux';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 
+import rootSaga from '../sagas';
+
 import rootReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -14,4 +16,4 @@ export default createStore(
   composeWithDevToolsDevelopmentOnly(middleware),
 );
 
-sagaMiddleware.run({})
+sagaMiddleware.run(rootSaga);

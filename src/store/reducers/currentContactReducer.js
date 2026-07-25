@@ -8,11 +8,7 @@ export default function currentContactReducer(
   { type, payload },
 ) {
   switch (type) {
-    case ACTION_TYPES.CHOOSE_CONTACT:
-      return { ...state, currentContact: payload };
-    case ACTION_TYPES.SWITCH_MODE_TO_ADD_CONTACT:
-      return { ...state, currentContact: payload };
-    case ACTION_TYPES.DELETE_CONTACT:
+    case ACTION_TYPES.DELETE_CONTACT_SUCCESS:
       return {
         ...state,
         currentContact:
@@ -20,6 +16,12 @@ export default function currentContactReducer(
             ? currentContactState
             : state.currentContact,
       };
+
+    case ACTION_TYPES.CHOOSE_CONTACT:
+      return { ...state, currentContact: payload };
+    case ACTION_TYPES.SWITCH_MODE_TO_CREATE_CONTACT:
+      return { ...state, currentContact: payload };
+
     default:
       return state;
   }

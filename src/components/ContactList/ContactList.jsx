@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import api from '../../api/contact-service';
 import {
-  getContacts,
-  switchModeToAddContact,
+  getContactsAction,
+  switchModeToCreateContact,
 } from '../../store/actions/contactActions';
 
 import ContactItem from './ContactItem/ContactItem';
@@ -15,7 +14,7 @@ function ContactList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    api.get('/contacts').then(({ data }) => dispatch(getContacts(data)));
+    dispatch(getContactsAction());
   }, []);
 
   const contacts = useSelector(state => state.contactsArr.contacts);
@@ -30,7 +29,7 @@ function ContactList() {
           ))}
         </ul>
       )}
-      <button onClick={() => dispatch(switchModeToAddContact())}>New</button>
+      <button onClick={() => dispatch(switchModeToCreateContact())}>New</button>
     </div>
   );
 }
