@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import api from '../../api/contact-service';
-import {
-  getContacts,
-  switchModeToAddContact,
-} from '../../store/actions/contactActions';
+import { getContacts } from '../../store/slices/contactSlice';
+import { switchModeToAddContact } from '../../store/slices/currentContactSlice';
 
 import ContactItem from './ContactItem/ContactItem';
 
@@ -15,7 +12,7 @@ function ContactList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    api.get('/contacts').then(({ data }) => dispatch(getContacts(data)));
+    dispatch(getContacts());
   }, []);
 
   const contacts = useSelector(state => state.contactsArr.contacts);

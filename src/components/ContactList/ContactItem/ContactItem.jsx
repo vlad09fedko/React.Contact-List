@@ -1,26 +1,17 @@
 import { useDispatch } from 'react-redux';
 
-import api from '../../../api/contact-service';
-import {
-  chooseContact,
-  deleteContact,
-} from '../../../store/actions/contactActions';
+import { deleteContact } from '../../../store/slices/contactSlice';
+import { chooseContact } from '../../../store/slices/currentContactSlice';
 
 import './contactItem.css';
 
 function ContactItem({ contact }) {
   const dispatch = useDispatch();
 
-  const onDeleteBtnClick = () => {
-    api
-      .delete(`/contacts/${contact.id}`)
-      .then(({ data: { id } }) => dispatch(deleteContact(id)));
-  };
-
   return (
     <li onDoubleClick={() => dispatch(chooseContact(contact))}>
       <p>{`${contact.fName} ${contact.lName}`}</p>
-      <span onClick={onDeleteBtnClick}>X</span>
+      <span onClick={() => dispatch(deleteContact(contact.id))}>X</span>
     </li>
   );
 }

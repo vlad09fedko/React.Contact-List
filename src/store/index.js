@@ -1,12 +1,13 @@
-import { composeWithDevToolsDevelopmentOnly } from '@redux-devtools/extension';
-import { applyMiddleware, createStore } from 'redux';
-import { createLogger } from 'redux-logger';
+import { configureStore } from '@reduxjs/toolkit';
+import { logger } from 'redux-logger';
 
-import rootReducer from './reducers';
+import contactReducer from './slices/contactSlice';
+import currentContactReducer from './slices/currentContactSlice';
 
-const middleware = applyMiddleware(createLogger());
-
-export default createStore(
-  rootReducer,
-  composeWithDevToolsDevelopmentOnly(middleware),
-);
+export default configureStore({
+  reducer: {
+    contactsArr: contactReducer,
+    currentContactObj: currentContactReducer,
+  },
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
+});

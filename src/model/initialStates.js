@@ -2,7 +2,7 @@ import { EMPTY_CONTACT } from '../constants/constants';
 
 export const contactsState = [
   {
-    id: 1,
+    id: 0,
     fName: '',
     lName: '',
     email: '',

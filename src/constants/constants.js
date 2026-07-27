@@ -7,3 +7,7 @@ export const EMPTY_CONTACT = {
   email: '',
   phone: '',
 };
+
+export const CONTACT_SLICE_NAME = 'contacts';
+
+export const CURRENT_CONTACT_SLICE_NAME = 'contacts';

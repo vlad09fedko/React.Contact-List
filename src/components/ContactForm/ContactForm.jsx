@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import api from '../../api/contact-service';
 import { EMPTY_CONTACT } from '../../constants/constants';
 import {
   addContact,
-  changeContact,
   deleteContact,
-} from '../../store/actions/contactActions';
+  updateContact,
+} from '../../store/slices/contactSlice';
 
 import InputArea from './InputArea/InputArea';
 
@@ -44,24 +43,14 @@ function ContactForm() {
     event.preventDefault();
 
     if (contact.id) {
-      api
-        .put(`/contacts/${contact.id}`, contact)
-        .then(({ data }) => dispatch(changeContact(data)));
+      dispatch(updateContact(contact));
     } else {
-      api
-        .post('/contacts', contact)
-        .then(({ data }) => dispatch(addContact(data)));
+      dispatch(addContact(contact));
     }
 
     if (!contact.id) {
       setContact({ ...EMPTY_CONTACT });
     }
-  };
-
-  const onDeleteContact = () => {
-    api
-      .delete(`/contacts/${contact.id}`)
-      .then(({ data }) => dispatch(deleteContact(data.id)));
   };
 
   return (
@@ -108,7 +97,7 @@ function ContactForm() {
         <input type='submit' value='Save'></input>
         <input
           type='button'
-          onClick={onDeleteContact}
+          onClick={() => dispatch(deleteContact(contact.id))}
           value='Delete'
           style={{
             visibility: contact.id ? 'visible' : 'hidden',
