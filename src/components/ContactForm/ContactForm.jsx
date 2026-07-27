@@ -18,7 +18,7 @@ function ContactForm() {
   const dispatch = useDispatch();
 
   const currentContact = useSelector(
-    state => state.currentContactObj.currentContact,
+    state => state.currentContact,
   );
 
   useEffect(() => {

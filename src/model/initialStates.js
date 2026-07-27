@@ -10,4 +10,3 @@ export const contactsState = [
   },
 ];
 
-export const currentContactState = { ...EMPTY_CONTACT };

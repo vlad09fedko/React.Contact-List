@@ -1,7 +1,9 @@
 import { useDispatch } from 'react-redux';
 
-import { deleteContact } from '../../../store/slices/contactSlice';
-import { chooseContact } from '../../../store/slices/currentContactSlice';
+import {
+  chooseContact,
+  deleteContact,
+} from '../../../store/slices/contactSlice';
 
 import './contactItem.css';
 

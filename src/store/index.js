@@ -2,12 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { logger } from 'redux-logger';
 
 import contactReducer from './slices/contactSlice';
-import currentContactReducer from './slices/currentContactSlice';
 
 export default configureStore({
-  reducer: {
-    contactsArr: contactReducer,
-    currentContactObj: currentContactReducer,
-  },
+  reducer: contactReducer,
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
 });
