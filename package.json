@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "json-server --watch db.json --port 5000 & vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "sv": "json-server --watch db.json --port 5000 & vite"
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.12.0",
     "axios": "^1.18.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
