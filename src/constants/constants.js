@@ -9,3 +9,5 @@ export const EMPTY_CONTACT = {
 };
 
 export const CONTACT_SLICE_NAME = 'contacts';
+
+export const CURRENT_CONTACT_SLICE_NAME = 'currentContact';

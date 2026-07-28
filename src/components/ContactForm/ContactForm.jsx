@@ -17,9 +17,7 @@ function ContactForm() {
 
   const dispatch = useDispatch();
 
-  const currentContact = useSelector(
-    state => state.currentContact,
-  );
+  const currentContact = useSelector(state => state.currentContactObj.currentContact);
 
   useEffect(() => {
     setContact(currentContact);
@@ -51,6 +49,11 @@ function ContactForm() {
     if (!contact.id) {
       setContact({ ...EMPTY_CONTACT });
     }
+  };
+
+  const onDelete = () => {
+    dispatch(deleteContact(contact.id));
+    setContact({ ...EMPTY_CONTACT });
   };
 
   return (
@@ -97,7 +100,7 @@ function ContactForm() {
         <input type='submit' value='Save'></input>
         <input
           type='button'
-          onClick={() => dispatch(deleteContact(contact.id))}
+          onClick={onDelete}
           value='Delete'
           style={{
             visibility: contact.id ? 'visible' : 'hidden',

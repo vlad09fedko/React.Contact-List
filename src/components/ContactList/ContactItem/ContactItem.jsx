@@ -1,19 +1,25 @@
 import { useDispatch } from 'react-redux';
 
+import { deleteContact } from '../../../store/slices/contactSlice';
 import {
+  checkWhenDeletingContact,
   chooseContact,
-  deleteContact,
-} from '../../../store/slices/contactSlice';
+} from '../../../store/slices/currentContactSlice';
 
 import './contactItem.css';
 
-function ContactItem({ contact }) {
+function ContactItem({ contact, contact: { fName, lName, id } }) {
   const dispatch = useDispatch();
+
+  const onDelete = () => {
+    dispatch(deleteContact(id));
+    dispatch(checkWhenDeletingContact(id));
+  };
 
   return (
     <li onDoubleClick={() => dispatch(chooseContact(contact))}>
-      <p>{`${contact.fName} ${contact.lName}`}</p>
-      <span onClick={() => dispatch(deleteContact(contact.id))}>X</span>
+      <p>{`${fName} ${lName}`}</p>
+      <span onClick={onDelete}>X</span>
     </li>
   );
 }

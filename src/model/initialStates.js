@@ -1,5 +1,3 @@
-import { EMPTY_CONTACT } from '../constants/constants';
-
 export const contactsState = [
   {
     id: 0,
@@ -9,4 +7,3 @@ export const contactsState = [
     phone: '',
   },
 ];
-

@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import api from '../../api/contact-service';
-import { CONTACT_SLICE_NAME, EMPTY_CONTACT } from '../../constants/constants';
+import { CONTACT_SLICE_NAME } from '../../constants/constants';
 import { contactsState } from '../../model/initialStates';
 
 const initialState = {
   contacts: contactsState,
-  currentContact: { ...EMPTY_CONTACT },
   isPending: false,
   error: null,
 };
@@ -78,32 +77,26 @@ export const deleteContact = createAsyncThunk(
   },
 );
 
+const setFulfilled = state => {
+  state.isPending = false;
+  state.error = null;
+};
+const setError = (state, { payload }) => {
+  state.isPending = false;
+  state.error = payload;
+};
 const setPending = state => {
   state.isPending = true;
   state.error = null;
 };
 
-const setError = (state, { payload }) => {
-  state.isPending = false;
-  state.error = payload;
-};
-
 const contactSlice = createSlice({
   name: CONTACT_SLICE_NAME,
   initialState,
-  reducers: {
-    switchModeToAddContact(state) {
-      state.currentContact = EMPTY_CONTACT;
-    },
-    chooseContact(state, { payload }) {
-      state.currentContact = payload;
-    },
-  },
   extraReducers: builder => {
     // Getting
     builder.addCase(getContacts.fulfilled, (state, { payload }) => {
-      state.isPending = false;
-      state.error = null;
+      setFulfilled(state);
       state.contacts = payload;
     });
     builder.addCase(getContacts.rejected, setError);
@@ -111,8 +104,8 @@ const contactSlice = createSlice({
 
     // Creating
     builder.addCase(addContact.fulfilled, (state, { payload }) => {
-      state.isPending = false;
-      state.error = null;
+      setFulfilled(state);
+
       state.contacts.push(payload);
     });
     builder.addCase(addContact.rejected, setError);
@@ -120,8 +113,7 @@ const contactSlice = createSlice({
 
     // Updating
     builder.addCase(updateContact.fulfilled, (state, { payload }) => {
-      state.isPending = false;
-      state.error = null;
+      setFulfilled(state);
       state.contacts = state.contacts.map(contact =>
         contact.id === payload.id ? payload : contact,
       );
@@ -131,17 +123,12 @@ const contactSlice = createSlice({
 
     // Deleting
     builder.addCase(deleteContact.fulfilled, (state, { payload }) => {
-      state.isPending = false;
-      state.error = null;
+      setFulfilled(state);
       state.contacts = state.contacts.filter(contact => contact.id !== payload);
-      if (state.currentContact.id === payload) {
-        state.currentContact = EMPTY_CONTACT;
-      }
     });
     builder.addCase(deleteContact.rejected, setError);
     builder.addCase(deleteContact.pending, setPending);
   },
 });
 
-export const { switchModeToAddContact, chooseContact } = contactSlice.actions;
 export default contactSlice.reducer;
