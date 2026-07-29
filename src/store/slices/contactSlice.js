@@ -105,7 +105,6 @@ const contactSlice = createSlice({
     // Creating
     builder.addCase(addContact.fulfilled, (state, { payload }) => {
       setFulfilled(state);
-
       state.contacts.push(payload);
     });
     builder.addCase(addContact.rejected, setError);
