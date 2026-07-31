@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getContacts } from '../../store/slices/contactSlice';
-import { switchModeToAddContact } from '../../store/slices/currentContactSlice';
+import { getContacts, switchModeToAddContact } from '../../store/slices/contactSlice';
 
 import ContactItem from './ContactItem/ContactItem';
 
@@ -15,7 +14,7 @@ function ContactList() {
     dispatch(getContacts());
   }, []);
 
-  const contacts = useSelector(state => state.contactsArr.contacts);
+  const contacts = useSelector(state => state.contacts);
 
   return (
     <div className={styles.contactList}>

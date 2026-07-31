@@ -1,10 +1,9 @@
 import { useDispatch } from 'react-redux';
 
-import { deleteContact } from '../../../store/slices/contactSlice';
 import {
-  checkWhenDeletingContact,
   chooseContact,
-} from '../../../store/slices/currentContactSlice';
+  deleteContact,
+} from '../../../store/slices/contactSlice';
 
 import './contactItem.css';
 
@@ -13,7 +12,6 @@ function ContactItem({ contact, contact: { fName, lName, id } }) {
 
   const onDelete = () => {
     dispatch(deleteContact(id));
-    dispatch(checkWhenDeletingContact(id));
   };
 
   return (
