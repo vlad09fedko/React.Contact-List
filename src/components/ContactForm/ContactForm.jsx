@@ -55,7 +55,6 @@ function ContactForm() {
 
   const onDelete = () => {
     dispatch(deleteContact(contact.id));
-    setContact({ ...EMPTY_CONTACT });
   };
 
   return (
