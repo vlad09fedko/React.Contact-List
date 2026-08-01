@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getContacts, switchModeToAddContact } from '../../store/slices/contactSlice';
+import { getContacts } from '../../store/slices/contactSlice';
 
 import ContactItem from './ContactItem/ContactItem';
 
@@ -18,15 +18,15 @@ function ContactList() {
 
   return (
     <div className={styles.contactList}>
-      {!contacts.length && <p>List is empty.</p>}
-      {!!contacts.length && (
+      {!contacts.length ? (
+        <p>List is empty.</p>
+      ) : (
         <ul>
           {contacts.map(contact => (
             <ContactItem key={contact.id} contact={contact} />
           ))}
         </ul>
       )}
-      <button onClick={() => dispatch(switchModeToAddContact())}>New</button>
     </div>
   );
 }

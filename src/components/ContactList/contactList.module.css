@@ -29,9 +29,3 @@ li {
 li:hover {
   border-color: var(--item-border-hover);
 }
-
-button {
-  position: absolute;
-  bottom: 1em;
-  transform: translateX(-50%);
-}
