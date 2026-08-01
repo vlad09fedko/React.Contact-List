@@ -15,7 +15,6 @@ function ContactList() {
   }, []);
 
   const contacts = useSelector(state => state.contacts);
-
   return (
     <div className={styles.contactList}>
       {!contacts.length ? (

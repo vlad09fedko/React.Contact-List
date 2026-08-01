@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { Stack } from '@mui/material';
+import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { EMPTY_CONTACT } from '../../constants/constants';
@@ -10,7 +11,9 @@ import {
   updateContact,
 } from '../../store/slices/contactSlice';
 
-import styles from './contactForm.module.css';
+import InputArea from './InputArea/InputArea';
+
+import './contactForm.module.css';
 
 function ContactForm() {
   const currentContact = useSelector(state => state.currentContact);
@@ -35,48 +38,54 @@ function ContactForm() {
       .max(16, 'Maximum phone number length is 16 characters')
       .matches(
         /^\+*\d{7,16}$/,
-        'Phone number is not valid. It must be like +381111111111',
+        'Phone number is not valid. It must be like +380123456789',
       ),
   });
 
   const renderForm = ({ isValid, setFieldValue }) => {
-    const onClearClick = ({ target }) => {
-      setFieldValue(target.previousSibling.name, '');
+    const onClearClick = ({ currentTarget }) => {
+      setFieldValue(currentTarget.previousSibling.name, '');
     };
 
     return (
       <Form>
-        <div className={styles.inputArea}>
-          <Field type='text' name='fName' placeholder='First name' />
-          <span onClick={onClearClick}>X</span>
-        </div>
-        <ErrorMessage name='fName' />
+        <InputArea
+          type='text'
+          name='fName'
+          placeholder='First name'
+          onClearClick={onClearClick}
+        />
 
-        <div className={styles.inputArea}>
-          <Field type='text' name='lName' placeholder='Last name' />
-          <span onClick={onClearClick}>X</span>
-        </div>
-        <ErrorMessage name='lName' />
+        <InputArea
+          type='text'
+          name='lName'
+          placeholder='Last name'
+          onClearClick={onClearClick}
+        />
 
-        <div className={styles.inputArea}>
-          <Field type='email' name='email' placeholder='Email' />
-          <span onClick={onClearClick}>X</span>
-        </div>
-        <ErrorMessage name='email' />
+        <InputArea
+          type='emal'
+          name='emal'
+          placeholder='Email'
+          onClearClick={onClearClick}
+        />
 
-        <div className={styles.inputArea}>
-          <Field type='tel' name='phone' placeholder='Phone' />
-          <span onClick={onClearClick}>X</span>
-        </div>
-        <ErrorMessage name='phone' />
+        <InputArea
+          type='tel'
+          name='phone'
+          placeholder='Phone'
+          onClearClick={onClearClick}
+        />
 
-        <div className={styles.buttons}>
+        <Stack direction='row' spacing={3}>
           <Field
             type='button'
             onClick={() => dispatch(switchModeToAddContact())}
             value='New'
           />
+
           <Field type='submit' value='Save' disabled={!isValid} />
+
           <Field
             type='button'
             onClick={() => dispatch(deleteContact(currentContact.id))}
@@ -85,7 +94,7 @@ function ContactForm() {
               visibility: currentContact.id ? 'visible' : 'hidden',
             }}
           />
-        </div>
+        </Stack>
       </Form>
     );
   };

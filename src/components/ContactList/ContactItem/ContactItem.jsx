@@ -1,4 +1,6 @@
 import { useDispatch } from 'react-redux';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton, Tooltip } from '@mui/material';
 
 import {
   chooseContact,
@@ -9,15 +11,22 @@ import './contactItem.css';
 
 function ContactItem({ contact, contact: { fName, lName, id } }) {
   const dispatch = useDispatch();
-
-  const onDelete = () => {
-    dispatch(deleteContact(id));
-  };
-
   return (
     <li onDoubleClick={() => dispatch(chooseContact(contact))}>
       <p>{`${fName} ${lName}`}</p>
-      <span onClick={onDelete}>X</span>
+      <Tooltip title='Delete' onClick={() => dispatch(deleteContact(id))}>
+        <IconButton>
+          <DeleteIcon
+            sx={{
+              color: '#4f4e5a',
+              '&:hover': {
+                color: 'white',
+                transition: 'color 0.2s',
+              },
+            }}
+          />
+        </IconButton>
+      </Tooltip>
     </li>
   );
 }
