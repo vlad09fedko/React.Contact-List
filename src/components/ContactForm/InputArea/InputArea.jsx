@@ -1,29 +1,31 @@
 import CancelIcon from '@mui/icons-material/Cancel';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton, Stack, TextField, Tooltip } from '@mui/material';
 import { ErrorMessage, Field } from 'formik';
 
 import styles from './inputArea.module.css';
 
 function InputArea({ type, name, placeholder, onClearClick }) {
+  const customInput = () => (
+    <TextField label={placeholder} sx={{}} name={name} fullWidth type={type} />
+  );
+
   return (
     <>
-      <div className={styles.inputArea}>
-        <Field type={type} name={name} placeholder={placeholder} />
+      <Stack
+        direction='row'
+        sx={{
+          width: '20em',
+        }}>
+        <Field as={customInput} name={name} type={type} />
         <Tooltip title='Clear' onClick={onClearClick}>
           <IconButton>
-            <CancelIcon
-              sx={{
-                color: '#4f4e5a',
-                '&:hover': {
-                  color: 'white',
-                  transition: 'color 0.2s',
-                },
-              }}
-            />
+            <CancelIcon />
           </IconButton>
         </Tooltip>
-      </div>
-      <ErrorMessage name={name} />
+      </Stack>
+      <ErrorMessage name={name}>
+        {message => <span className={styles.errorMsg}>{message}</span>}
+      </ErrorMessage>
     </>
   );
 }

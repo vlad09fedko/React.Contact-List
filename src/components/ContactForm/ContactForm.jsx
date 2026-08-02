@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -32,12 +32,13 @@ function ContactForm() {
   const schema = Yup.object().shape({
     fName: Yup.string().trim().required('First name is required field.'),
     lName: Yup.string().trim().required('Last name is required field.'),
-    email: Yup.string().email('Email is not valid.'),
+    email: Yup.string().trim().email('Email is not valid.'),
     phone: Yup.string()
+      .trim()
       .min(7, 'Minimum phone number length is 7 characters.')
       .max(16, 'Maximum phone number length is 16 characters')
       .matches(
-        /^\+*\d{7,16}$/,
+        /^\+*\d{7,15}$/,
         'Phone number is not valid. It must be like +380123456789',
       ),
   });
@@ -46,6 +47,24 @@ function ContactForm() {
     const onClearClick = ({ currentTarget }) => {
       setFieldValue(currentTarget.previousSibling.name, '');
     };
+
+    const btnsStyles = { width: '100%', margin: '1em' };
+
+    const newBtn = () => (
+      <Button variant='contained' color='primary' sx={btnsStyles}>
+        New
+      </Button>
+    );
+    const saveBtn = () => (
+      <Button variant='contained' color='success' sx={btnsStyles}>
+        Save
+      </Button>
+    );
+    const deleteBtn = () => (
+      <Button variant='contained' color='error' sx={btnsStyles}>
+        Delete
+      </Button>
+    );
 
     return (
       <Form>
@@ -64,8 +83,8 @@ function ContactForm() {
         />
 
         <InputArea
-          type='emal'
-          name='emal'
+          type='email'
+          name='email'
           placeholder='Email'
           onClearClick={onClearClick}
         />
@@ -79,17 +98,17 @@ function ContactForm() {
 
         <Stack direction='row' spacing={3}>
           <Field
+            as={newBtn}
             type='button'
             onClick={() => dispatch(switchModeToAddContact())}
-            value='New'
           />
 
-          <Field type='submit' value='Save' disabled={!isValid} />
+          <Field as={saveBtn} type='submit' disabled={!isValid} />
 
           <Field
+            as={deleteBtn}
             type='button'
             onClick={() => dispatch(deleteContact(currentContact.id))}
-            value='Delete'
             style={{
               visibility: currentContact.id ? 'visible' : 'hidden',
             }}

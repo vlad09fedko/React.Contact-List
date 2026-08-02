@@ -1,35 +1,6 @@
 :root {
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-
-  font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: whitesmoke;
-    --text: #9ca3af;
-    --border: #8f8f9d;
-    --border-hover: rgb(230, 230, 230);
-    --item-bg: rgb(210, 210, 210);
-    --item-border: rgb(143, 143, 157);
-    --item-border-hover: rgb(74, 74, 83);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #16171d;
-    --text: #9ca3af;
-    --border: #8f8f9d;
-    --border-hover: #4f4e5a;
-    --item-bg: #2b2a33;
-    --item-border: #8f8f9d;
-    --item-border-hover: whitesmoke;
-  }
 }
 
 * {

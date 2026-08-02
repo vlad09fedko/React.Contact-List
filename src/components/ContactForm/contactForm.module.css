@@ -4,27 +4,3 @@ form {
   gap: 1em;
   font-size: 1em;
 }
-
-input[type='submit'],
-input[type='button'] {
-  color: var(--text);
-  user-select: none;
-  background-color: var(--bg);
-  border-color: var(--border);
-  font-size: 1em;
-  padding: 0.3em 1em;
-  border-radius: 0.5em;
-  cursor: pointer;
-  transition: 0.2s;
-  width: 100%;
-}
-
-input[type='submit']:hover,
-input[type='button']:hover {
-  background-color: var(--border-hover);
-}
-
-input[type='submit']:disabled {
-  cursor: initial;
-  background-color: var(--border-hover);
-}

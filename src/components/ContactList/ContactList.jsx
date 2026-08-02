@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box, List, Typography } from '@mui/material';
 
 import { getContacts } from '../../store/slices/contactSlice';
 
 import ContactItem from './ContactItem/ContactItem';
-
-import styles from './contactList.module.css';
 
 function ContactList() {
   const dispatch = useDispatch();
@@ -16,17 +15,26 @@ function ContactList() {
 
   const contacts = useSelector(state => state.contacts);
   return (
-    <div className={styles.contactList}>
+    <Box
+      sx={{
+        minWidth: '20em',
+      }}>
       {!contacts.length ? (
-        <p>List is empty.</p>
+        <Typography variant='h2' align='center' sx={{ fontSize: '1.5em' }}>
+          List is empty.
+        </Typography>
       ) : (
-        <ul>
+        <List
+          sx={{
+            minWidth: '20em',
+            padding: '0',
+          }}>
           {contacts.map(contact => (
             <ContactItem key={contact.id} contact={contact} />
           ))}
-        </ul>
+        </List>
       )}
-    </div>
+    </Box>
   );
 }
 
