@@ -1,29 +1,8 @@
-.inputArea {
-  height: 2.5em;
-  display: flex;
-  background-color: var(--item-bg);
-  border: 1px solid var(--item-border);
-  transition: 0.2s;
-  cursor: pointer;
-}
-
-.inputArea:hover {
-  border-color: var(--item-border-hover);
-}
-
-.inputArea > input {
-  width: 100%;
-  padding: 1em;
-  font-size: 1em;
-  border: none;
-  outline: none;
-  background-color: var(--item-bg);
-}
-
 .errorMsg {
   color: red;
   border: 1px solid red;
-  border-radius: 15px;
+  border-radius: 5px;
   background-color: rgba(255, 0, 0, 0.1);
   padding: 0.5em;
+  max-width: 20em;
 }

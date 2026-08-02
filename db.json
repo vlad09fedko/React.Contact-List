@@ -1,19 +1,4 @@
 {
-  "contacts": [
-    {
-      "fName": "Fedko",
-      "lName": "Vlad1",
-      "email": "",
-      "phone": "",
-      "id": "0"
-    },
-    {
-      "fName": "Fedko",
-      "lName": "Vlad2",
-      "email": "",
-      "phone": "",
-      "id": "1"
-    }
-  ],
+  "contacts": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

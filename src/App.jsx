@@ -8,10 +8,12 @@ function App() {
     <Box
       sx={{
         maxWidth: 'fit-content',
-        padding: '2em 0',
+        paddingTop: '1em',
         margin: '10em auto',
+        paddingBottom: '3em',
         border: '1px solid',
         borderRadius: '1em',
+        position: 'relative',
       }}>
       <Typography
         variant='h1'

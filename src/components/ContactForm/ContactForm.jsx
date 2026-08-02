@@ -44,27 +44,11 @@ function ContactForm() {
   });
 
   const renderForm = ({ isValid, setFieldValue }) => {
-    const onClearClick = ({ currentTarget }) => {
-      setFieldValue(currentTarget.previousSibling.name, '');
+    const onClearClick = name => {
+      setFieldValue(name, '');
     };
 
     const btnsStyles = { width: '100%', margin: '1em' };
-
-    const newBtn = () => (
-      <Button variant='contained' color='primary' sx={btnsStyles}>
-        New
-      </Button>
-    );
-    const saveBtn = () => (
-      <Button variant='contained' color='success' sx={btnsStyles}>
-        Save
-      </Button>
-    );
-    const deleteBtn = () => (
-      <Button variant='contained' color='error' sx={btnsStyles}>
-        Delete
-      </Button>
-    );
 
     return (
       <Form>
@@ -96,22 +80,53 @@ function ContactForm() {
           onClearClick={onClearClick}
         />
 
-        <Stack direction='row' spacing={3}>
+        <Stack
+          direction='row'
+          spacing={10}
+          sx={{
+            position: 'absolute',
+            bottom: '1em',
+            right: '1em',
+            left: '1em',
+          }}>
           <Field
-            as={newBtn}
-            type='button'
-            onClick={() => dispatch(switchModeToAddContact())}
+            as={() => (
+              <Button
+                variant='contained'
+                color='primary'
+                sx={btnsStyles}
+                onClick={() => dispatch(switchModeToAddContact())}>
+                New
+              </Button>
+            )}
           />
 
-          <Field as={saveBtn} type='submit' disabled={!isValid} />
+          <Field
+            as={() => (
+              <Button
+                variant='contained'
+                color='success'
+                sx={btnsStyles}
+                disabled={!isValid}
+                type='submit'>
+                Save
+              </Button>
+            )}
+          />
 
           <Field
-            as={deleteBtn}
-            type='button'
-            onClick={() => dispatch(deleteContact(currentContact.id))}
-            style={{
-              visibility: currentContact.id ? 'visible' : 'hidden',
-            }}
+            as={() => (
+              <Button
+                variant='contained'
+                color='error'
+                sx={{
+                  ...btnsStyles,
+                  visibility: currentContact.id ? 'visible' : 'hidden',
+                }}
+                onClick={() => dispatch(deleteContact(currentContact.id))}>
+                Delete
+              </Button>
+            )}
           />
         </Stack>
       </Form>
