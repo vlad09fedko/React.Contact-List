@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Stack } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
 
 import { EMPTY_CONTACT } from '../../constants/constants';
 import {
@@ -10,6 +9,7 @@ import {
   switchModeToAddContact,
   updateContact,
 } from '../../store/slices/contactSlice';
+import { formSchema } from '../../utils/validate/validationSchemas';
 
 import InputArea from './InputArea/InputArea';
 
@@ -28,20 +28,6 @@ function ContactForm() {
       resetForm();
     }
   };
-
-  const schema = Yup.object().shape({
-    fName: Yup.string().trim().required('First name is required field.'),
-    lName: Yup.string().trim().required('Last name is required field.'),
-    email: Yup.string().trim().email('Email is not valid.'),
-    phone: Yup.string()
-      .trim()
-      .min(7, 'Minimum phone number length is 7 characters.')
-      .max(16, 'Maximum phone number length is 16 characters')
-      .matches(
-        /^\+*\d{7,15}$/,
-        'Phone number is not valid. It must be like +380123456789',
-      ),
-  });
 
   const renderForm = ({ isValid, setFieldValue }) => {
     const onClearClick = name => {
@@ -137,7 +123,7 @@ function ContactForm() {
     <Formik
       initialValues={currentContact ? currentContact : EMPTY_CONTACT}
       onSubmit={onFormSubmit}
-      validationSchema={schema}
+      validationSchema={formSchema}
       enableReinitialize>
       {renderForm}
     </Formik>
