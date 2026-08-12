@@ -2,13 +2,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Stack } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
 
-import { EMPTY_CONTACT } from '../../constants/constants';
 import {
-  addContact,
-  deleteContact,
-  switchModeToAddContact,
-  updateContact,
-} from '../../store/slices/contactSlice';
+  useCreateContactMutation,
+  useDeleteContactMutation,
+  useUpdateContactMutation,
+} from '../../api/contact-service';
+import { EMPTY_CONTACT } from '../../constants/constants';
+import { switchModeToAddContact } from '../../store/slices/currentContactSlice';
 import { formSchema } from '../../utils/validate/validationSchemas';
 
 import InputArea from './InputArea/InputArea';
@@ -16,17 +16,26 @@ import InputArea from './InputArea/InputArea';
 import './contactForm.module.css';
 
 function ContactForm() {
-  const currentContact = useSelector(state => state.currentContact);
-
+  const currentContact = useSelector(
+    state => state.currentContact.currentContact,
+  );
   const dispatch = useDispatch();
 
-  const onFormSubmit = (values, { resetForm }) => {
+  const [createContact] = useCreateContactMutation();
+  const [updateContact] = useUpdateContactMutation();
+  const [deleteContact] = useDeleteContactMutation();
+
+  const onFormSubmit = async (values, { resetForm }) => {
     if (currentContact.id) {
-      dispatch(updateContact(values));
+      await updateContact(values).unwrap();
     } else {
-      dispatch(addContact(values));
+      await createContact(values).unwrap();
       resetForm();
     }
+  };
+
+  const onDeleteContact = async (id) => {
+    await deleteContact(id);
   };
 
   const renderForm = ({ isValid, setFieldValue }) => {
@@ -109,7 +118,7 @@ function ContactForm() {
                   ...btnsStyles,
                   visibility: currentContact.id ? 'visible' : 'hidden',
                 }}
-                onClick={() => dispatch(deleteContact(currentContact.id))}>
+                onClick={() => onDeleteContact(currentContact.id)}>
                 Delete
               </Button>
             )}

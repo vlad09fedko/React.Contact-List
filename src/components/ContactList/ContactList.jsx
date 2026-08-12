@@ -1,25 +1,17 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, List, Typography } from '@mui/material';
 
-import { getContacts } from '../../store/slices/contactSlice';
+import { useGetContactsQuery } from '../../api/contact-service';
 
 import ContactItem from './ContactItem/ContactItem';
 
 function ContactList() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getContacts());
-  }, []);
-
-  const contacts = useSelector(state => state.contacts);
+  const { data = [] } = useGetContactsQuery();
   return (
     <Box
       sx={{
         minWidth: '20em',
       }}>
-      {!contacts.length ? (
+      {!data.length ? (
         <Typography variant='h2' align='center' sx={{ fontSize: '1.5em' }}>
           List is empty.
         </Typography>
@@ -29,7 +21,7 @@ function ContactList() {
             minWidth: '20em',
             padding: '0',
           }}>
-          {contacts.map(contact => (
+          {data.map(contact => (
             <ContactItem key={contact.id} contact={contact} />
           ))}
         </List>
