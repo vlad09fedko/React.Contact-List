@@ -6,7 +6,7 @@ import {
   useCreateContactMutation,
   useDeleteContactMutation,
   useUpdateContactMutation,
-} from '../../api/contact-service';
+} from '../../api/contactApi';
 import { EMPTY_CONTACT } from '../../constants/constants';
 import { switchModeToAddContact } from '../../store/slices/currentContactSlice';
 import { formSchema } from '../../utils/validate/validationSchemas';
@@ -34,9 +34,7 @@ function ContactForm() {
     }
   };
 
-  const onDeleteContact = async (id) => {
-    await deleteContact(id);
-  };
+  const onDeleteContact = async id => await deleteContact(id).unwrap();
 
   const renderForm = ({ isValid, setFieldValue }) => {
     const onClearClick = name => {

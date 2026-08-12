@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from '@mui/material';
 
-import { useDeleteContactMutation } from '../../../api/contact-service';
+import { useDeleteContactMutation } from '../../../api/contactApi';
 import { chooseContact } from '../../../store/slices/currentContactSlice';
 
 function ContactItem({ contact, contact: { fName, lName, id } }) {
@@ -16,7 +16,7 @@ function ContactItem({ contact, contact: { fName, lName, id } }) {
   const [deleteContact] = useDeleteContactMutation();
 
   const onChooseContact = () => dispatch(chooseContact(contact));
-  const onDeleteContact = async () => await deleteContact(id);
+  const onDeleteContact = async () => await deleteContact(id).unwrap();
   return (
     <ListItem
       onDoubleClick={onChooseContact}

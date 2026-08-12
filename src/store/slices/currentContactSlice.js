@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { contactApi } from '../../api/contact-service';
-import { CONTACT_SLICE_NAME, EMPTY_CONTACT } from '../../constants/constants';
+import { contactApi } from '../../api/contactApi';
+import {
+  CURRENT_CONTACT_SLICE_NAME,
+  EMPTY_CONTACT,
+} from '../../constants/constants';
 
 const initialState = {
   currentContact: EMPTY_CONTACT,
 };
 
-const contactSlice = createSlice({
-  name: CONTACT_SLICE_NAME,
+const currentContactSlice = createSlice({
+  name: CURRENT_CONTACT_SLICE_NAME,
   initialState,
   reducers: {
     switchModeToAddContact(state) {
@@ -30,6 +33,7 @@ const contactSlice = createSlice({
   },
 });
 
-export const { switchModeToAddContact, chooseContact } = contactSlice.actions;
+export const { switchModeToAddContact, chooseContact } =
+  currentContactSlice.actions;
 
-export default contactSlice.reducer;
+export default currentContactSlice.reducer;

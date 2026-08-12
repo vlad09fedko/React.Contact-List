@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { logger } from 'redux-logger';
 
-import { contactApi } from '../api/contact-service';
+import { contactApi } from '../api/contactApi';
 import currentContact from './slices/currentContactSlice';
 
 export default configureStore({

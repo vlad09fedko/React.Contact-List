@@ -1,6 +1,6 @@
 import { Box, List, Typography } from '@mui/material';
 
-import { useGetContactsQuery } from '../../api/contact-service';
+import { useGetContactsQuery } from '../../api/contactApi';
 
 import ContactItem from './ContactItem/ContactItem';
 
